@@ -2,11 +2,9 @@
 #include <cmath>
 #include <string>
 
-using namespace std;
-
 class VendingMachine {
 
-    string snacks[7] = {"Starburst", "Skittles", "Takis", "Welch Berry Gummy",
+    std::string snacks[7] = {"Starburst", "Skittles", "Takis", "Welch Berry Gummy",
                          "Trolli Sour Worms", "Hot Cheetos", "Water"};
 
 public:
@@ -15,34 +13,34 @@ public:
 
     void menu() {
 
-        string userContinue;
-        cout << "Starburst - (001)" << " ||" << " Skittles - (002)" << " ||" << " Takis - (003)"
-             << " ||" << " Welch Berry Gummy - (004)" << " ||" << " Trolli Sour Worms - (005)" << endl;
+        std::string userContinue;
+        std::cout << "Starburst - (001)" << " ||" << " Skittles - (002)" << " ||" << " Takis - (003)"
+             << " ||" << " Welch Berry Gummy - (004)" << " ||" << " Trolli Sour Worms - (005)" << std::endl;
         deposit();
-        cout << "Current Balance: " << "$" << balance(currentBalance) << endl;
-        cout << "Insert more cash? (Yes || No): ";
-        cin >> userContinue;
+        std::cout << "Current Balance: " << "$" << balance(currentBalance) << std::endl;
+        std::cout << "Insert more cash? (Yes || No): ";
+        std::cin >> userContinue;
         while(userContinue == "yes" || userContinue == "Yes") {
             deposit();
-            cout << "Current Balance: " << "$" << balance(currentBalance) << endl;
+            std::cout << "Current Balance: " << "$" << balance(currentBalance) << std::endl;
             if (balance(currentBalance) >= 5.00) {
-                cout << "Limit Reached." << endl;
+                std::cout << "Limit Reached." << std::endl;
                 break;
             } else {
-                cout << "Insert Cash? (Yes || No): ";
-                cin >> userContinue;
+                std::cout << "Insert Cash? (Yes || No): ";
+                std::cin >> userContinue;
             }
         }
-        cout << "\nEnter Selection Code: " << endl;
+        std::cout << "\nEnter Selection Code: " << std::endl;
     }
 
     // Starting Function
     void deposit() {
         double cash;
-        cout << "Insert Cash ($1.25): ";
-        cin >> cash;
+        std::cout << "Insert Cash ($1.25): ";
+        std::cin >> cash;
         if (cash >= 5.00) {
-            cout << "Limit Reached." << endl;
+            std::cout << "Limit Reached." << std::endl;
         }
         currentBalance = currentBalance + cash;
     }
