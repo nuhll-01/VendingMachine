@@ -14,22 +14,24 @@ private:
 public:
     void menu() {
         items();
-        deposit();
-        std::cout << "\nCurrent Balance: " << "$" << balance(currentBalance) << std::endl;
-        std::cout << "Insert more cash? (Yes || No): ";
+        for (int i = 0; i < 2; i++) {
+            deposit();
+            std::cout << "\nCurrent Balance: " << "$" << balance(currentBalance) << std::endl;
+        }
+        std::cout << "\nInsert more cash? (Yes || No): ";
         std::cin >> userInput;
         while (userInput == "yes" || userInput == "Yes") {
             deposit();
             std::cout << "\nCurrent Balance: " << "$" << balance(currentBalance) << std::endl;
             if (balance(currentBalance) >= 5.00) {
-                std::cout << "Limit Reached." << std::endl;
+                printf("\n%s", "Limit Reached");
                 break;
             } else {
-                std::cout << "Insert Cash? (Yes || No): ";
+                std::cout << "\nInsert Cash? (Yes || No): ";
                 std::cin >> userInput;
             }
         }
-        std::cout << "\nEnter Code: ";
+        std::cout << "\n\nEnter Code: ";
         std::cin >> code;
         getItem(code);
     }
@@ -38,7 +40,7 @@ private:
     // Starting Function
     void deposit() {
         double cash;
-        std::cout << "\n\nInsert Cash (Accepts $1 and $5): ";
+        std::cout << "\nInsert Cash (Accepts $1 and $5): ";
         std::cin >> cash;
         if (cash == 1.00) {
             currentBalance++;
@@ -48,7 +50,7 @@ private:
     }
 
     // Users current balance
-    double balance(double userMoney) {
+    [[nodiscard]] double balance(double userMoney) const {
         return money + userMoney;
     }
 
@@ -58,7 +60,8 @@ private:
                      "\nSkittles - $1.25 (002)"
                      "\nTrolli Sour Octopuses - $1.50 (003)"
                      "\nWelch's Fruit Snacks - $1.50 (004)"
-                     "\nGatorade - $1.75 (005)");
+                     "\nGatorade - $1.75 (005)"
+                     "\n");
     }
 
     static void getItem(int numbCode) {
@@ -67,9 +70,11 @@ private:
                                  "Trolli Sour Octopuses", "Hot Cheetos", "Gatorade"};
 
         if (userCode == 001) {
-            printf("%s", "Processing Order...");
+            printf("\n%s", "Processing Order...");
             sleep();
-            std::cout << "\nItem Chosen:" << " " << snacks[0] << std::endl;
+            printf("\n%s", "Transaction Complete!");
+            sleep();
+            std::cout << "\nChosen item:" << " " << snacks[0] << std::endl;
         }
     }
 
