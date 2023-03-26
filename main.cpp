@@ -5,55 +5,57 @@
 
 class VendingMachine {
 
-private:
-    int code{0};
-    double currentBalance{0.0}, money{0.0};
-    std::string userInput{};
+public:
+    int commandInput = {0};
+    double balance = {0.0}, money = {0.0}, cash = {0.0};
 
 public:
     void menu() {
         items();
         for (int i = 0; i < 2; i++) {
             deposit();
-            std::cout << "\nCurrent Balance: " << "$" << balance(currentBalance) << '\n';
+            getBalance();
         }
-        std::cout << "\nInsert more cash? (Yes || No): ";
-        std::cin >> userInput;
-        while (userInput == "yes" || userInput == "Yes") {
-            deposit();
-            std::cout << "\nCurrent Balance: " << "$" << balance(currentBalance) << '\n';
-            if (balance(currentBalance) == 5.00) {
-                printf("\n%s", "Limit Reached");
+        std::cout << "\nCheckout? (1 --> Yes | 2 --> No): ";
+        std::cin >> commandInput;
+        switch (commandInput) {
+            case 1:
+                enterCode();
                 break;
-            } else {
-                std::cout << "\nInsert Cash? (Yes || No): ";
-                std::cin >> userInput;
-            }
+            case 2:
+                while(commandInput == 2) {
+                    deposit();
+                    getBalance();
+                    std::cout << "\nCheckout? (1 --> Yes | 2 --> No): ";
+                    std::cin >> commandInput;
+                    if (commandInput == 1) {
+                        enterCode();
+                    } else if (UserBalance(balance) == 5.00) {
+                        printf("\n%s", "Limit Reached");
+                        enterCode();
+                    }
+                }
+                break;
+            default:
+                printf("\n%s", "Error, please try again.");
         }
-        std::cout << "\n\nEnter Code: ";
-        std::cin >> code;
-        getItem(code);
+
+
+        // while (commandInput == "yes" || commandInput == "Yes") {
+        //     deposit();
+        //     std::cout << "\nCurrent Balance: " << "$" << UserBalance(balance) << '\n';
+        //     if (UserBalance(balance) == 5.00) {
+        //         printf("\n%s", "Limit Reached");
+        //         break;
+        //     } else {
+        //         std::cout << "\nInsert Cash? (Yes || No): ";
+        //         std::cin >> userInput;
+        //     }
+        // }
+
     }
 
 private:
-    // Starting Function
-    void deposit() {
-        double cash;
-        std::cout << "\nInsert Cash (Accepts $1 and $5): ";
-        std::cin >> cash;
-        isCurrency(cash);
-        if (cash == 1.00) {
-            currentBalance++;
-        } else {
-            printf("\n%s", "Invalid Currency.");
-        }
-    }
-
-    // Users current balance
-    [[nodiscard]] double balance(double userMoney) const {
-        return money + userMoney;
-    }
-
     // The list of items
     static void items() {
         printf("%s", "Starburst - $1.25 (100)"
@@ -62,7 +64,38 @@ private:
                      "\nTrolli Sour Octopuses - $1.50 (103)"
                      "\nHot Cheetos - $1.50 (104)"
                      "\nGatorade - $1.75 (105)"
+                     "\n\n(Accepts $1 and $5)"
                      "\n");
+    }
+
+    // Starting Function
+    void deposit() {
+        std::cout << "\nInsert Cash: ";
+        std::cin >> cash;
+        checkBalance();
+    }
+
+    // Users current balance
+    [[nodiscard]] double UserBalance(double userMoney) const {
+        return money + userMoney;
+    }
+
+    // Returns current balance
+    void getBalance() {
+        std::cout << "\nBalance: " << "$" << UserBalance(balance) << '\n';
+    }
+
+    void checkBalance() {
+        if (cash == 1.00) {
+            balance = balance + 1;
+        } else if (cash == 5.00) {
+            balance = balance + 5;
+            enterCode();
+            exit(0);
+        } else {
+            printf("\n%s", "Invalid Input.");
+            exit(0);
+        }
     }
 
     // Retrieves the item from the vending machine
@@ -89,6 +122,8 @@ private:
         } else if (userCode == 105) {
             processOrder();
             std::cout << "\nChosen item:" << " " << snacks[5] << '\n'; // Gatorade
+        } else {
+            std::cout << "\nInvalid Input" << "\n"; // if an invalid input is entered.
         }
     }
 
@@ -104,17 +139,17 @@ private:
     static void processOrder() {
         printf("\n%s", "Processing Order...");
         sleep();
-        printf("%s", "Transaction Complete!");
+        printf("\n%s", "Transaction Complete!");
         sleep();
     }
 
-    // (WORK-IN-PROGRESS) //
-    static bool isCurrency(double cash) {
-        double currency{};
-        if (cash < currency) {
-            return "\ninvalid currency";
-        }
-        return false;
+public:
+    static void enterCode() {
+        int code = {0};
+        std::cout << "\nEnter Code: ";
+        std::cin >> code;
+        getItem(code);
+        exit(0);
     }
 };
 
